@@ -10,6 +10,12 @@ express : 4.16.0
 
 # Getting start
 
+## install node
+
+Enter https://nodejs.org/ko/ and download node 8.11.3 LTS
+
+## build
+
 ~~~shell
 cd group-circle
 npm install
