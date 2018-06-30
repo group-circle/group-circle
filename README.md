@@ -12,13 +12,17 @@ express : 4.16.0
 
 ## install node
 
-Enter https://nodejs.org/ko/ and download node 8.11.3 LTS
+1. Enter https://nodejs.org/ko/ and download node 8.11.3 LTS
+2. install webpack
+
+- npm install webpack webpack-cli --save-dev
+- npm install babel-core babel-loader babel-preset-es2015 --save-dev
 
 ## build
 
 ~~~shell
 cd group-circle
 npm install
-DEBUG=group-circle:* npm start
+npm start
 ~~~
 
