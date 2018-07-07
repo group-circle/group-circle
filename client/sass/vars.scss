@@ -1,0 +1,42 @@
+/*
+ * Media Breakpoints
+ */
+
+// Small devices (tablets, 600px and up).
+$screen-s: '(min-width: 600px)';
+// Medium devices (desktops, 1024px and up).
+$screen-m: '(min-width: 1440px)';
+// Large devices (large desktops, 1200px and up).
+$screen-l: '(min-width: 1600px)';
+// Landscape mode
+$screen-ls: '(max-height: 500px)';
+
+/*
+ * Colors
+ */
+
+$c-red: #f13c3c;
+$c-pink: #e61bd5;
+$c-purple: #7c2aa7;
+$c-grey: #a99ca8;
+$c-focus-outline: #a41698;
+
+$c-countdown-pink: #e61bd5;
+$c-countdown-yellow: #f0bc08;
+$c-countdown-green: #50d22c;
+$c-countdown-red: #f13c3c;
+$c-about-bg-red: #f74d4d;
+$c-info-timer-flash: #f8ff00;
+
+/*
+ * Font Stacks
+ */
+
+$display-font: 'Changa One', sans-serif;
+$body-font: 'Roboto', arial, sans-serif;
+
+/*
+ * Transition curves
+ */
+
+$material-ease-out: cubic-bezier(0, 0, .2, 1);

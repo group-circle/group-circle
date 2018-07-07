@@ -1,0 +1,58 @@
+/*
+ * Media Breakpoints
+ */
+/*
+ * Colors
+ */
+/*
+ * Font Stacks
+ */
+/*
+ * Transition curves
+ */
+/*
+ * Z-index UI application
+ */
+html {
+  box-sizing: border-box;
+  font-size: 100%;
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+*:focus {
+  outline: 1px solid #a41698; }
+
+a {
+  font-weight: 500; }
+
+img {
+  max-width: 100%; }
+
+body {
+  background: white;
+  bottom: 0;
+  font-family: "Roboto", arial, sans-serif;
+  font-weight: 300;
+  left: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0; }
+
+.views {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; }
+  .views__heading {
+    font-family: "Changa One", sans-serif;
+    font-size: 30px;
+    text-transform: uppercase;
+    margin: 0;
+    letter-spacing: 1px; }
