@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node node ./bin/www",
-    "sass-watch": "node-sass -w client/sass/main.scss public/stylesheets/main.min.css",
-    "sass-build": "node-sass client/sass/main.scss public/stylesheets/main.min.css --output-style compressed",
+    "start": "supervisor ./bin/www",
+    "sass-watch": "node-sass -w client/sass/main.scss public/stylesheet/main.min.css",
+    "sass-build": "node-sass client/sass/main.scss public/stylesheet/main.min.css --output-style compressed",
     "dev": "concurrently \"node ./bin/www\" \"webpack -d --watch\" \"npm run sass-watch\""
   },
   "dependencies": {
+    "concurrently": "^3.5.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
@@ -17,8 +18,8 @@
     "morgan": "~1.9.0",
     "node-sass": "^4.7.2",
     "pug": "2.0.0-beta11",
-    "watchify": "^3.10.0",
-    "concurrently": "^3.5.1"
+    "supervisor": "^0.12.0",
+    "watchify": "^3.10.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

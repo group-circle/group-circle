@@ -1,5 +1,5 @@
 export default class App {
     constructor() {
-        console.log("HELLO WORLD! Here too?!?")
+        console.log("HELLO WORLD!")
     }
 }
