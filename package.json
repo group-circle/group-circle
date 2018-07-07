@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www && webpack --watch",
-    "build": "webpack -p"
+    "start": "node node ./bin/www",
+    "sass-watch": "node-sass -w client/sass/main.scss public/stylesheets/main.min.css",
+    "sass-build": "node-sass client/sass/main.scss public/stylesheets/main.min.css --output-style compressed",
+    "dev": "concurrently \"node ./bin/www\" \"webpack -d --watch\" \"npm run sass-watch\""
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -13,7 +15,10 @@
     "http-errors": "~1.6.2",
     "jquery": "^3.3.1",
     "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "node-sass": "^4.7.2",
+    "pug": "2.0.0-beta11",
+    "watchify": "^3.10.0",
+    "concurrently": "^3.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

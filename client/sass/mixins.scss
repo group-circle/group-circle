@@ -1,0 +1,23 @@
+// see https://css-tricks.com/conditional-media-query-mixins/
+
+@mixin bp($point) {
+    @if $point == s {
+      @media #{$screen-s} {
+        @content;
+      }
+    }
+    @if $point == m {
+      @media #{$screen-m} {
+        @content;
+      }
+    }
+    @if $point == l {
+      @media #{$screen-l} {
+        @content;
+      }
+    } @else if $point == ls {
+      @media #{$screen-ls} {
+        @content;
+      }
+    }
+  }
