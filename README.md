@@ -23,6 +23,6 @@ express : 4.16.0
 ~~~shell
 cd group-circle
 npm install
-npm start
+npm run dev
 ~~~
 
