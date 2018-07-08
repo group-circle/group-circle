@@ -63,3 +63,9 @@ typings/
 # build files
 public/javascript/
 public/stylesheet/
+
+# IDE
+*.idea
+
+# package-lock.json
+package-lock.json
