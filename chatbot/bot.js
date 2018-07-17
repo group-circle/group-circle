@@ -25,6 +25,9 @@ app.post('/webhook', (req, res) => {
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
+        if (webhook_event.message) {
+          receivedMessage(webhook_event);
+        }
         console.log(webhook_event);
       });
   
@@ -37,12 +40,34 @@ app.post('/webhook', (req, res) => {
   
   });
 
+function receivedMessage(event) {
+  var senderId = event.sender.id;
+  var content = event.message.text;
+  var echo_message = "ECHO : " + content;
+  sendTextMessage(senderId, echo_message);
+}
+
+function sendTextMessage(recipientId, message) {
+  request({
+      url: 'https://graph.facebook.com/v2.6/me/messages',
+      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      method: 'POST',
+      json: {
+          recipient: { id: recipientId },
+          message: { text: message }
+      }
+  }, function(error, response, body) {
+      if (error) {
+          console.log('Error sending message: ' + response.error);
+      }
+  });
+}
   // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
 
     // Your verify token. Should be a random string.
     let VERIFY_TOKEN = process.env.VERIFY_TOKEN
-      
+    
     // Parse the query params
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];
