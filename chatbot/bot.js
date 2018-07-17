@@ -31,6 +31,7 @@ app.post('/webhook', (req, res) => {
           receivedMessage(webhook_event);
         }
         console.log(webhook_event);
+        webhook_event.nlp.entities && console.log(webhook_event.nlp.entities);
       });
   
       // Returns a '200 OK' response to all requests
