@@ -33,7 +33,12 @@ app.post('/webhook', (req, res) => {
         console.log(webhook_event);
         if(webhook_event.message && webhook_event.message.nlp.entities) {
           console.log(webhook_event.message.nlp.entities);
-        }
+          if (webhook_event.message.nlp.entities.url && webhook_event.message.nlp.entities.url.length > 0) {
+            receivedURL(webhook_event)
+          } else {
+            receivedMessage(webhook_event);
+          }
+        } 
       });
   
       // Returns a '200 OK' response to all requests
@@ -51,6 +56,11 @@ function receivedMessage(event) {
   var echo_message = "ECHO : " + content;
   sendTextMessage(senderId, echo_message);
 }
+function receivedURL(event) {
+  var senderId = event.sender.id;
+  var url = event.message.nlp.entities.url[0].value
+  sendURLButton(senderId, url);
+}
 
 function sendTextMessage(recipientId, message) {
   request({
@@ -60,6 +70,37 @@ function sendTextMessage(recipientId, message) {
       json: {
           recipient: { id: recipientId },
           message: { text: message }
+      }
+  }, function(error, response, body) {
+      if (error) {
+          console.log('Error sending message: ' + response.error);
+      }
+  });
+}
+function sendURLButton(recipientId, url) {
+  request({
+      url: 'https://graph.facebook.com/v2.6/me/messages',
+      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      method: 'POST',
+      json: {
+          recipient: { id: recipientId },
+          message: {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"button",
+                "text":"Try the URL button!",
+                "buttons":[
+                  {
+                    "type":"web_url",
+                    "url": url,
+                    "title":"URL Button",
+                    "webview_height_ratio": "full"
+                  }
+                ]
+              }
+            }
+          }
       }
   }, function(error, response, body) {
       if (error) {
