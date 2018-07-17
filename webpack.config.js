@@ -34,6 +34,9 @@ const config = {
     node: {
         fs: 'empty',
         net: 'empty'
+    },
+    resolve: {
+        mainFields: ['main', 'modules']
     }
 }
 
