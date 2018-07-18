@@ -118,7 +118,13 @@ function askForCategory(recipientId) {
     "Trending",
     "Suggested"
   ]
-  
+  let quickReplies = categories.map(category => {
+    return {
+      "content_type": "text",
+      "title": category,
+      "payload": category
+    };
+  });
 
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -127,7 +133,8 @@ function askForCategory(recipientId) {
       json: {
           recipient: { id: recipientId },
           message: {
-            "text": "Please tell us what category of content you just give."
+            "text": "Please tell us what category of content you just give.",
+            "quick_replies": quickReplies
             // ,
             // "quick_replies":[{"content_type": "text", "title": "Suggested"}, {"content_type": "text", "title": "Trending"}]
             // "quick_replies":categories.map(c => {
