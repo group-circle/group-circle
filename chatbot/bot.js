@@ -127,9 +127,10 @@ function askForCategory(recipientId) {
           recipient: { id: recipientId },
           message: {
             "text": "Please tell us what category of content you just give.",
-            "quick_replies":categories.map(c => {
-              return {content_type: "text", "title": c}
-            })
+            "quick_replies":[{"content_type": "text", "title": "Suggested"}, {"content_type": "text", "title": "Trending"}]
+            // "quick_replies":categories.map(c => {
+            //   return {content_type: "text", "title": c}
+            // })
           }
       }
   }, function(error, response, body) {
