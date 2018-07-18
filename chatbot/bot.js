@@ -33,7 +33,10 @@ app.post('/webhook', (req, res) => {
         const isReceivedURL =
           webhook_event.message && webhook_event.message.nlp.entities &&
           webhook_event.message.nlp.entities.url && webhook_event.message.nlp.entities.url.length > 0
-
+        console.log("senderId", senderId)
+        console.log("alreadyHaveURL", alreadyHaveURL)
+        console.log("isReceivedTextMessage", isReceivedTextMessage)
+        console.log("isReceivedURL", isReceivedURL)
         if (isReceivedTextMessage) {
           if (alreadyHaveURL) {
             // 아마 카테고리 정보를 가지고 있을 것이다
