@@ -69,3 +69,6 @@ public/stylesheet/
 
 # package-lock.json
 package-lock.json
+
+#resources
+resource/*
