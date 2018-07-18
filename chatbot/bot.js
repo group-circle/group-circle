@@ -27,6 +27,7 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0]
  
+        const senderId = webhook_event.sender.id;
         const alreadyHaveURL = dialogContext[senderId] && dialogContext[senderId].url
         const isReceivedTextMessage = !!webhook_event.message
         const isReceivedURL =
