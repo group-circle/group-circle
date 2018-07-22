@@ -12,32 +12,29 @@
     <link rel="stylesheet" href="stylesheet/main.min.css">
 </head>
 
-<body>   
-    <h1>INDEX: Hello, world!</h1>
-    <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
+<body>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="javascript/bundle.js"></script>
-    <!-- FB login-->
+
+    <div class="header">
+        <h1>Group Circle</h1>
+        <div class="loginBtnContainer">
+            <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
+        </div>
+    </div>
+
+    <div class="welcome">
+        <div class="letterContainer">
+            share <br/>
+            interesting posts
+        </div>
+    </div>
+
+    <!-- for FB login-->
     <div id="fb-root"></div>
-
-    <div>
-        <textarea id="url" placeholder="input you URL..."></textarea>
-        <button class="requestUrl"> Click! </button>
-    </div>
-
-    <div id="review" style="display: block;">
-        <a class="url" href="" target="_BLANK">
-            <img class="img" src="" style="width: 300px">
-            <div>
-                <h4 class="name"></h4>
-                <p class="desc"></p>
-                <span class="domain"></span>
-            </div>
-        </a>
-    </div>
 </body>
 
 </html>
