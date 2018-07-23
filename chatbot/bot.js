@@ -47,12 +47,16 @@ app.post('/webhook', (req, res) => {
           console.log("dialogContext", dialogContext)
           
         if (isReceivedURL) {
+          console.log("receivedURL")
           receivedURL(webhook_event)
         } else if (isReceivedTextMessage) {
           if (alreadyHaveURL) {
             // 아마 카테고리 정보를 가지고 있을 것이다
+            console.log("receivedCategory")
             receivedCategory(webhook_event)
           } else {
+
+            console.log("receivedText")
             receivedText(webhook_event)
           }
         }
@@ -132,6 +136,7 @@ function askForCategory(recipientId) {
 
 
 function sendTextMessage(recipientId, message) {
+  console.log("sendTextMessage", recipientId, message)
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
       qs: { access_token: PAGE_ACCESS_TOKEN },
