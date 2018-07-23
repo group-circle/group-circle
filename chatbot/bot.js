@@ -28,17 +28,20 @@ app.post('/webhook', (req, res) => {
   
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
+      // Returns a '200 OK' response to all requests
+      res.status(200).send('EVENT_RECEIVED');
+
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0]
- 
-        const senderId = webhook_event.sender.id;
+        console.log("webhook_event", webhook_event)
+        const senderId = webhook_event.sender && webhook_event.sender.id;
         const alreadyHaveURL = dialogContext[senderId] && dialogContext[senderId].url
         const isReceivedTextMessage = !!webhook_event.message
         const isReceivedURL =
-          webhook_event.message && webhook_event.message.nlp.entities &&
+          webhook_event.message && webhook_event.message.nlp && webhook_event.message.nlp.entities &&
           webhook_event.message.nlp.entities.url && webhook_event.message.nlp.entities.url.length > 0
         
           console.log("isReceivedURL", isReceivedURL)
@@ -61,9 +64,6 @@ app.post('/webhook', (req, res) => {
           }
         }
       });
-  
-      // Returns a '200 OK' response to all requests
-      res.status(200).send('EVENT_RECEIVED');
     } else {
       // Returns a '404 Not Found' if event is not from a page subscription
       res.sendStatus(404);
@@ -71,7 +71,7 @@ app.post('/webhook', (req, res) => {
   });
 
 function receivedText(event) {
-  var senderId = event.sender.id;
+  var senderId = event.sender && event.sender.id;
   sendTextMessage(senderId, "Please provide the URL you would like to share.");
 }
 
