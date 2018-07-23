@@ -95,6 +95,7 @@ function askForCategory(recipientId) {
   console.log("askForCategory", dialogContext[recipientId].url)
   // quickReplies 의 최대 표시가능 갯수는 11개이므로 
   const categoryKeys = Object.keys(categories).slice(0, 5)
+  console.log("categoryKeys", categoryKeys)
   let quickReplies = categoryKeys.map(category => {
     return {
       "content_type": "text",
@@ -102,6 +103,8 @@ function askForCategory(recipientId) {
       "payload": category
     };
   });
+  console.log("quickReplies", quickReplies)
+  console.log("PAGE_ACCESS_TOKEN", PAGE_ACCESS_TOKEN)
 
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
