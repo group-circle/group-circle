@@ -5,6 +5,8 @@ const request = require('request');
 const postRepository= require("../src/PostRepository");
 const categories = require("../src/Category")
 const securityTokens = require("./securityTokens");
+const metascraper = require('metascraper')
+const got = require('got')
 
 const
   express = require('express'),
@@ -23,6 +25,33 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 const dialogContext = {}
 
+async function getUrlMetadata(url) {
+  return new Promise(res => {
+    const {body: html, url} = await got(url)
+    const metadata = await metascraper({html, url})
+    console.log(metadata)
+    res(metadata)
+  })
+}
+
+function getUserProfile(senderId) {
+  return new Promise(res => {
+    request({
+      url: `https://graph.facebook.com/${senderId}`,
+      qs: { 
+        access_token: PAGE_ACCESS_TOKEN,
+        fields: "first_name,last_name,profile_pic"
+      },
+      method: 'GET'
+    }, function(error, response, body) {
+      if (error) {
+          console.log('Error sending message: ' + response.error);
+      }
+      console.log("GOT USER profile Information", body)
+      res(body)
+    });
+  })
+}
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {  
     let body = req.body;
@@ -33,7 +62,7 @@ app.post('/webhook', (req, res) => {
       res.status(200).send('EVENT_RECEIVED');
 
       // Iterates over each entry - there may be multiple if batched
-      body.entry.forEach(function(entry) {
+      body.entry.forEach(async function(entry) {
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0]
@@ -50,33 +79,7 @@ app.post('/webhook', (req, res) => {
           console.log("alreadyHaveURL", alreadyHaveURL)
           console.log("dialogContext", dialogContext)
        
-          
-          request({
-            url: `https://graph.facebook.com/${senderId}`,
-            qs: { 
-              access_token: PAGE_ACCESS_TOKEN,
-              fields: "first_name,last_name,profile_pic"
-            },
-            method: 'GET'
-          }, function(error, response, body) {
-            if (error) {
-                console.log('Error sending message: ' + response.error);
-            }
-            console.log("GOT USER profile Information", body)
-          });
-
-          request({
-            url: `https://graph.facebook.com/${senderId}/groups`,
-            qs: { 
-              access_token: PAGE_ACCESS_TOKEN
-            },
-            method: 'GET'
-          }, function(error, response, body) {
-            if (error) {
-                console.log('Error sending message: ' + response.error);
-            }
-            console.log("GOT USER gorup Information", body)
-          });
+        const userProfile = await getUserProfile(senderId)
           
         if (isReceivedURL) {
           console.log("receivedURL")
@@ -87,7 +90,9 @@ app.post('/webhook', (req, res) => {
             console.log("receivedCategory")
             receivedCategory(webhook_event)
           } else {
-
+            dialogContext[senderId] = {
+              userProfile: userProfile
+            }
             console.log("receivedText")
             receivedText(webhook_event)
           }
@@ -121,12 +126,13 @@ function receivedCategory(event) {
   delete dialogContext[senderId]
 }
 
-function receivedURL(event) {
+async function receivedURL(event) {
   const senderId = event.sender.id
   const url = event.message.nlp.entities.url[0].value
-  
+  const metadata = await getUrlMetadata(url)
   // URL 받은 컨텍스트 저장
-  dialogContext[senderId] = {url}
+  dialogContext[senderId].url = url
+  dialogContext[senderId].metadata = metadata
 
   askForCategory(senderId);
 }
