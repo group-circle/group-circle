@@ -17,6 +17,7 @@ const VERIFY_TOKEN = securityTokens.VERIFY_TOKEN
 
 console.log("PAGE_ACCESS_TOKEN", PAGE_ACCESS_TOKEN)
 console.log("VERIFY_TOKEN", VERIFY_TOKEN)
+
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
@@ -48,6 +49,22 @@ app.post('/webhook', (req, res) => {
           console.log("isReceivedTextMessage", isReceivedTextMessage)
           console.log("alreadyHaveURL", alreadyHaveURL)
           console.log("dialogContext", dialogContext)
+       
+          
+          request({
+            url: `https://graph.facebook.com/${senderId}`,
+            qs: { 
+              access_token: PAGE_ACCESS_TOKEN,
+              fields: ["first_name","last_name","profile_pic"]
+            },
+            method: 'GET'
+          }, function(error, response, body) {
+            if (error) {
+                console.log('Error sending message: ' + response.error);
+            }
+            console.log("GOT USER profile Information", body)
+          });
+
           
         if (isReceivedURL) {
           console.log("receivedURL")
