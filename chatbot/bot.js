@@ -2,7 +2,7 @@
 
 // Imports dependencies and set up http server
 const request = require('request');
-const postRepository= require("../src/PostRepository");
+// const postRepository= require("../src/PostRepository");
 const categories = require("../src/Category")
 const securityTokens = require("./securityTokens");
 
@@ -82,7 +82,7 @@ function receivedCategory(event) {
   // 파베에 링크와 카테고리 정보 쏘기 
   const url = dialogContext[senderId].url
   // TODO: 기록 완료 후에 응답 주면 더 안정적이고 좋을듯
-  postRepository.addPost(url, categories[category])
+  // postRepository.addPost(url, categories[category])
 
   // 고맙다고 마무리 인사하기 
   sendTextMessage(senderId, 
