@@ -79,8 +79,6 @@ app.post('/webhook', (req, res) => {
           console.log("isReceivedTextMessage", isReceivedTextMessage)
           console.log("alreadyHaveURL", alreadyHaveURL)
           console.log("dialogContext", dialogContext)
-       
-        const userProfile = await getUserProfile(senderId)
           
         if (isReceivedURL) {
           console.log("receivedURL")
@@ -91,6 +89,8 @@ app.post('/webhook', (req, res) => {
             console.log("receivedCategory")
             receivedCategory(webhook_event)
           } else {
+            const userProfile = await getUserProfile(senderId)
+
             dialogContext[senderId] = {
               userProfile: userProfile
             }
