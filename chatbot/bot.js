@@ -15,6 +15,8 @@ const
 const PAGE_ACCESS_TOKEN = securityTokens.PAGE_ACCESS_TOKEN
 const VERIFY_TOKEN = securityTokens.VERIFY_TOKEN
 
+console.log("PAGE_ACCESS_TOKEN", PAGE_ACCESS_TOKEN)
+console.log("VERIFY_TOKEN", VERIFY_TOKEN)
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
@@ -109,7 +111,6 @@ function askForCategory(recipientId) {
     };
   });
   console.log("quickReplies", quickReplies)
-  console.log("PAGE_ACCESS_TOKEN", PAGE_ACCESS_TOKEN)
 
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
