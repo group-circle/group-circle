@@ -184,16 +184,6 @@ function sendURLButton(recipientId, url) {
 }
   // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
-  request({
-      url: 'https://m.naver.com',
-      method: 'GET',
-  }, function(error, response, body) {
-      if (error) {
-          console.log('Error sending message: ' + response.error);
-      }
-      console.log(body)
-  });
-
     // Parse the query params
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];
@@ -206,7 +196,6 @@ app.get('/webhook', (req, res) => {
     
       // Checks the mode and token sent is correct
       if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-        
         // Responds with the challenge token from the request
         console.log('WEBHOOK_VERIFIED');
         res.status(200).send(challenge);
