@@ -48,8 +48,8 @@ function getUserProfile(senderId) {
       if (error) {
           console.log('Error sending message: ' + response.error);
       }
-      console.log("GOT USER profile Information", body)
-      res(body)
+      console.log("GOT USER profile Information", JSON.parse(body))
+      res(JSON.parse(body))
     });
   })
 }
