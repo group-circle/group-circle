@@ -55,7 +55,7 @@ app.post('/webhook', (req, res) => {
             url: `https://graph.facebook.com/${senderId}`,
             qs: { 
               access_token: PAGE_ACCESS_TOKEN,
-              fields: ["first_name","last_name","profile_pic"]
+              fields: "first_name,last_name,profile_pic"
             },
             method: 'GET'
           }, function(error, response, body) {
