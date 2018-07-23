@@ -18,6 +18,13 @@ express : 4.16.0
 - npm install webpack webpack-cli --save-dev
 - npm install babel-core babel-loader babel-preset-es2015 --save-dev
 
+## 키 설정
+
+1. https://console.firebase.google.com/project/group-circle/settings/serviceaccounts/adminsdk 에서 새 비공개 키 설정 클릭
+2. 생성한 키를 resource/serviceAccountKey.json 으로 추가
+
+해당 키는 깃헙에 올리시면 안됩니다.
+
 ## build
 
 ~~~shell

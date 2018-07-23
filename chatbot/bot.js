@@ -2,13 +2,18 @@
 
 // Imports dependencies and set up http server
 const request = require('request');
+const postRepository= require("../src/PostRepository");
+const categories = require("../src/Category")
+const securityTokens = require("./securityTokens");
 
 const
   express = require('express'),
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()); // creates express http server
-  
-require('dotenv').config();
+
+// Don't forget to fill this before deploy to Heroku
+const PAGE_ACCESS_TOKEN = securityTokens.PAGE_ACCESS_TOKEN
+const VERIFY_TOKEN = securityTokens.VERIFY_TOKEN
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -33,9 +38,7 @@ app.post('/webhook', (req, res) => {
         const isReceivedURL =
           webhook_event.message && webhook_event.message.nlp.entities &&
           webhook_event.message.nlp.entities.url && webhook_event.message.nlp.entities.url.length > 0
-        console.log("senderId", senderId)
-        console.log("alreadyHaveURL", alreadyHaveURL)
-        console.log("isReceivedURL", isReceivedURL)
+
         if (isReceivedURL) {
           receivedURL(webhook_event)
         } else if (isReceivedTextMessage) {
@@ -67,6 +70,8 @@ function receivedCategory(event) {
 
   // 파베에 링크와 카테고리 정보 쏘기 
   const url = dialogContext[senderId].url
+  // TODO: 기록 완료 후에 응답 주면 더 안정적이고 좋을듯
+  postRepository.addPost(url, categories[category])
 
   // 고맙다고 마무리 인사하기 
   sendTextMessage(senderId, 
@@ -88,37 +93,9 @@ function receivedURL(event) {
 
 function askForCategory(recipientId) {
   console.log("askForCategory", dialogContext[recipientId].url)
-  const categories = [
-    // "Local",
-    // "Friends",
-    // "Parenting",
-    // "School and Education",
-    // "Sports",
-    // "Food",
-    // "Photography",
-    // "Buy and Sell",
-    // "Professional Networking",
-    // "Animals and Pets",
-    // "Outdoor Activities",
-    // "Business",
-    // "Hobby and Leisure",
-    // "Science and Tech",
-    // "Health and Fitness",
-    // "Funny",
-    // "Arts and Culture",
-    // "Games",
-    // "Cars and Motorcycles",
-    // "Neighborhood and Community",
-    // "Support and Comfort",
-    // "Home and Garden",
-    "Style",
-    "Travel and Places",
-    "Spiritual and Inspirational",
-    "Movies and TV",
-    "Trending",
-    "Suggested"
-  ]
-  let quickReplies = categories.map(category => {
+  // quickReplies 의 최대 표시가능 갯수는 11개이므로 
+  const categoryKeys = Object.keys(categories).slice(0, 5)
+  let quickReplies = categoryKeys.map(category => {
     return {
       "content_type": "text",
       "title": category,
@@ -128,18 +105,13 @@ function askForCategory(recipientId) {
 
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      qs: { access_token: PAGE_ACCESS_TOKEN },
       method: 'POST',
       json: {
           recipient: { id: recipientId },
           message: {
             "text": "Please tell us what category of content you just give.",
             "quick_replies": quickReplies
-            // ,
-            // "quick_replies":[{"content_type": "text", "title": "Suggested"}, {"content_type": "text", "title": "Trending"}]
-            // "quick_replies":categories.map(c => {
-            //   return {content_type: "text", "title": c}
-            // })
           }
       }
   }, function(error, response, body) {
@@ -153,7 +125,7 @@ function askForCategory(recipientId) {
 function sendTextMessage(recipientId, message) {
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      qs: { access_token: PAGE_ACCESS_TOKEN },
       method: 'POST',
       json: {
           recipient: { id: recipientId },
@@ -168,7 +140,7 @@ function sendTextMessage(recipientId, message) {
 function sendURLButton(recipientId, url) {
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      qs: { access_token: PAGE_ACCESS_TOKEN },
       method: 'POST',
       json: {
           recipient: { id: recipientId },
@@ -198,10 +170,6 @@ function sendURLButton(recipientId, url) {
 }
   // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
-
-    // Your verify token. Should be a random string.
-    let VERIFY_TOKEN = process.env.VERIFY_TOKEN
-    
     // Parse the query params
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];

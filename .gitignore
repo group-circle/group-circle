@@ -55,7 +55,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-# .env
+.env
 
 # next.js build output
 .next
@@ -63,3 +63,14 @@ typings/
 # build files
 public/javascript/
 public/stylesheet/
+
+# IDE
+*.idea
+
+# package-lock.json
+package-lock.json
+
+#resources
+resource/*
+
+chatbot/securityTokens.js
