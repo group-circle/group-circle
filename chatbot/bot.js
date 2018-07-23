@@ -25,8 +25,8 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 const dialogContext = {}
 
-async function getUrlMetadata(url) {
-  return new Promise(res => {
+function getUrlMetadata(url) {
+  return new Promise(async res => {
     const {body: html, url} = await got(url)
     const metadata = await metascraper({html, url})
     console.log(metadata)
