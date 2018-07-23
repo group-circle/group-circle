@@ -65,6 +65,18 @@ app.post('/webhook', (req, res) => {
             console.log("GOT USER profile Information", body)
           });
 
+          request({
+            url: `https://graph.facebook.com/${senderId}/groups`,
+            qs: { 
+              access_token: PAGE_ACCESS_TOKEN
+            },
+            method: 'GET'
+          }, function(error, response, body) {
+            if (error) {
+                console.log('Error sending message: ' + response.error);
+            }
+            console.log("GOT USER gorup Information", body)
+          });
           
         if (isReceivedURL) {
           console.log("receivedURL")
