@@ -26,11 +26,9 @@ module.exports = {
         }
     },
 
-    addPost : function (url, category) {
+    addPost : function (postObject) {
         const now = new Date().getTime();
-        this.ref.child(Number.MAX_SAFE_INTEGER - now).set({
-            url, category, createdAt: now
-        })
+        this.ref.child(Number.MAX_SAFE_INTEGER - now).set(postObject)
     },
 
     findPostListByLastKeyAndCategory : function (lastKey, category) {

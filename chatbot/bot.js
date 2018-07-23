@@ -115,9 +115,9 @@ function receivedCategory(event) {
   var category = event.message.text;
 
   // 파베에 링크와 카테고리 정보 쏘기 
-  const url = dialogContext[senderId].url
+  dialogContext[senderId].category = categories[category]
   // TODO: 기록 완료 후에 응답 주면 더 안정적이고 좋을듯
-  postRepository.addPost(url, categories[category])
+  postRepository.addPost(dialogContext[senderId])
 
   // 고맙다고 마무리 인사하기 
   sendTextMessage(senderId, 
