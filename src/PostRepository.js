@@ -26,11 +26,6 @@ module.exports = {
         }
     },
 
-    addPost : function (postObject) {
-        const now = new Date().getTime();
-        this.ref.child(Number.MAX_SAFE_INTEGER - now).set(postObject)
-    },
-
     findPostListByLastKeyAndCategory : function (lastKey, category) {
 
         if(category === categories["all"]) {
