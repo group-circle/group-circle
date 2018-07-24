@@ -1,3 +1,56 @@
 @import 'vars';
 @import 'mixins';
 @import 'ui';
+
+.header {
+  width: 100%;
+  height: 82px;
+  background-color: #3b5998;
+  h1 {
+    padding: 13px;
+    float: left;
+    color: #ffffff;
+  }
+  .loginBtnContainer {
+    margin: 21px;
+    float: right;
+  }
+}
+.welcome {
+  font-size: 70px;
+  font-family: cursive;
+  .letterContainer {
+    margin: 10% auto;
+    width: 500px;
+    height: 100px;
+  }
+}
+
+.listWrapper {
+  .list {
+    width: 500px;
+    margin: 20px auto;
+    border: 1px solid #dddfe2;
+    background-color: #fff;
+    .url {
+      font-size: 14px;
+      color: black;
+    }
+    .img {
+      border-top: 1px solid #dddfe2;
+    }
+    .domain {
+      color: #606770;
+      font-size: 12px;
+      border-top: 1px solid #dddfe2;
+    }
+    .title {
+      font-size: 16px;
+      color: #1d2129;
+    }
+    .desc {
+      font-size: 14px;
+      color: #606770;
+    }
+  }
+}
