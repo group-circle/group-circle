@@ -54,6 +54,7 @@ function getUserProfile(senderId) {
     });
   })
 }
+
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {  
     let body = req.body;
