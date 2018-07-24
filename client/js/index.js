@@ -76,7 +76,6 @@ function drawList(category, lastKey) {
         });
         if (lastKey) {
             $('.lists').append(listHtml);
-            debugger;
         } else {
             window.mint = listHtml;
             $('.lists').html(listHtml);
