@@ -25,3 +25,32 @@
     height: 100px;
   }
 }
+
+.listWrapper {
+  .list {
+    width: 500px;
+    margin: 20px auto;
+    border: 1px solid #dddfe2;
+    background-color: #fff;
+    .url {
+      font-size: 14px;
+      color: black;
+    }
+    .img {
+      border-top: 1px solid #dddfe2;
+    }
+    .domain {
+      color: #606770;
+      font-size: 12px;
+      border-top: 1px solid #dddfe2;
+    }
+    .title {
+      font-size: 16px;
+      color: #1d2129;
+    }
+    .desc {
+      font-size: 14px;
+      color: #606770;
+    }
+  }
+}

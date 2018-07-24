@@ -16,13 +16,15 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v3.0&appId=217172708910978&autoLogAppEvents=1"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="javascript/bundle.js"></script>
 
     <div class="header">
         <h1>Group Circle</h1>
         <div class="loginBtnContainer">
-            <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
+            <!--<fb:login-button  onlogin="checkFacebookLogin();"  size="large" scope="user_about_me">Sign in using Facebook</fb:login-button-->
+            <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true" onlogin="checkFBLogin();"></div>
         </div>
     </div>
 
@@ -33,7 +35,45 @@
         </div>
     </div>
 
-    <!-- for FB login-->
+    <div class="listWrapper">
+        <div class="list" data-category="1">
+            <span class="url"> https://www.daum.net </span>
+            <img class="img" src="//i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001"/>
+            <div class="domain">www.daum.net</div>
+            <div class="title">DAUM</div>
+            <div class="desc">나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum</div>
+        </div>
+        <div class="list" data-category="1">
+            <span class="url"> https://www.daum.net </span>
+            <img class="img" src="//i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001"/>
+            <div class="domain">www.daum.net</div>
+            <div class="title">DAUM</div>
+            <div class="desc">나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum</div>
+        </div>
+        <div class="list" data-category="1">
+            <span class="url"> https://www.daum.net </span>
+            <img class="img" src="//i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001"/>
+            <div class="domain">www.daum.net</div>
+            <div class="title">DAUM</div>
+            <div class="desc">나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum</div>
+        </div>
+        <div class="list" data-category="1">
+            <span class="url"> https://www.daum.net </span>
+            <img class="img" src="//i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001"/>
+            <div class="domain">www.daum.net</div>
+            <div class="title">DAUM</div>
+            <div class="desc">나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum</div>
+        </div>
+        <div class="list" data-category="1">
+            <span class="url"> https://www.daum.net </span>
+            <img class="img" src="//i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001"/>
+            <div class="domain">www.daum.net</div>
+            <div class="title">DAUM</div>
+            <div class="desc">나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum</div>
+        </div>
+    </div>
+
+    <!-- for FB] login-->
     <div id="fb-root"></div>
 </body>
 
