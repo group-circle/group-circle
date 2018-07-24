@@ -43,6 +43,9 @@ body {
   right: 0;
   top: 0; }
 
+li {
+  list-style-type: none; }
+
 .views {
   position: absolute;
   top: 0;

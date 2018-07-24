@@ -8,11 +8,12 @@ const FBLoginStatus = {
 };
 let url;
 
-getMetaData('http://www.daum.net').then((data) => {
-    console.log(data); // data is HERE
-});
 $(document).ready(() => {
     loginCheck();
+    $('.category').on('click', function (e) {
+        var key = $(e.currentTarget).data('key');
+        drawList(key, null);
+    });
 });
 
 window.checkFBLogin = () => {
@@ -30,7 +31,7 @@ function loginCheck () {
             case FBLoginStatus.NOT_AUTHORIZED:
             case FBLoginStatus.UNKNOWN:
                 toggleWelcome(true);
-                //showList(false);
+                showList(false);
                 break;
             default:
                 break;
@@ -47,66 +48,31 @@ function showList(isShow) {
 }
 
 function drawList(category, lastKey) {
-    //category = category || 0;
-    //lastKey = lastKey || null;
-    //let url = 'posts?category=' + category + (lastKey ? 'lastKey=' + lastKey: '');
-    //$.ajax({
-    //    url: url,
-    //    dataType: 'json'
-    //}).done((json) => {
-    //    let lastKey = json.lastKey;
-    //    let lists = json.list;
-    //    $.each(lists, (key, item) => {
-    //        //console.log(item.category);
-    //        //console.log(item.url);
-    //        //console.log('');
-    //
-    //      //  item에 있는 정보들...
-    //      //  category
-    //      //  url,
-    //      //  img,
-    //      //  domain,
-    //      // title,
-    //      // desc
-    //    });
-    //})
-    let mock = {
-        category: 1,
-        url: 'https://www.daum.net',
-        img: '//i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001',
-        domain: 'www.daum.net',
-        title: 'DAUM',
-        desc: '나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum'
-    }
+    category = category || 0;
+    lastKey = lastKey || null;
+    let url = 'posts?category=' + category + (lastKey ? 'lastKey=' + lastKey: '');
+    $.ajax({
+        url: url,
+        dataType: 'json'
+    }).done((json) => {
+        let lastKey = json.lastKey;
+        let lists = json.list;
+        let listHtml = '';
+        let postTemplate = _.template('<div class="list" data-category=<%= category %>><span class="url"> <%= url %> </span><img class="img" src=<%= image %>>' +
+          '<div class="domain"><%= domain %></div><div class="title"><%= title %></div><div class="desc"><%= description %></div></div>');
 
-    //let postTemplate = _.template("");
-    //let html = postTemplate({mock});
-}
-
-
-
-//var compiled = _.template("hello: <%= name %>");
-//compiled({name: 'moe'});
-
-function getMetaData(url) {
-    return $.get('https://query.yahooapis.com/v1/public/yql', {
-        q: 'SELECT content FROM data.headers WHERE url=\"' + url + '\" and ua=\"' + navigator.userAgent + '\"',
-        format: 'json',
-        env: 'store://datatables.org/alltableswithkeys'
-    }).then((json) => {
-        var content = $(json.query.results.resources.content);
-
-        var title = content.filter('title').text() != null && content.filter('title').text() != undefined ? content.filter('title').text() : '';
-        var description = content.filter('meta[name="description"]').attr('content') != null && content.filter('meta[name="description"]').attr('content') != undefined ? content.filter('meta[name="description"]').attr('content') : (content.filter('meta[property="og:description"]').attr('content') != null && content.filter('meta[property="og:description"]').attr('content') != undefined ? content.filter('meta[property="og:description"]').attr('content') : '');
-        var image = content.filter('meta[property="og:image"]').attr('content') != null && content.filter('meta[property="og:image"]').attr('content') != undefined ? content.filter('meta[property="og:image"]').attr('content') : (content.find('img:eq(0)').attr('src') != null && content.find('img:eq(0)').attr('src') != undefined ? content.find('img:eq(0)').attr('src') : '');
-        var domain = url.toString().split('/')[2];
-
-        return {
-            url: url,
-            img: image,
-            domain: domain,
-            title: title,
-            desc: description
-        };
+        $.each(lists, (key, item) => {
+            let meta = item.metadata;
+            meta.category = item.category;
+            meta.domain = item.url.split('://')[1].split('/')[0];
+            listHtml += postTemplate(meta);
+        });
+        if (lastKey) {
+            $('.lists').append(listHtml);
+            debugger;
+        } else {
+            window.mint = listHtml;
+            $('.lists').html(listHtml);
+        }
     });
 }
