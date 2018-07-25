@@ -181,12 +181,13 @@ function receivedCategory(event) {
     Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
     `, [
       "It's Funny",
-      "Viralable video",
-      "Latest research",
-      "Breaking news",
-      "Eengaging topic",
+      "Fascinating Event",
       "Latest job posting",
       "Urgent question",
+      "Latest research",
+      "Viralable video",
+      "Breaking news",
+      "Eengaging topic",
       "Useful tip"
     ])
 
