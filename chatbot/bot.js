@@ -178,7 +178,16 @@ function receivedCategory(event) {
   sendTextMessage(senderId, 
     `Thanks. This article world most useful to "${category}" groups.
     Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
-    `);
+    `, [
+      "This pic will make your day",
+      "a viralable video",
+      "a breaking news",
+      "Latest job posting",
+      "Urgent question",
+      "It is Useful tip for life",
+      "Article contains great topic to talk with"
+    ])
+
 
 
   // // 고맙다고 마무리 인사하기 
@@ -232,17 +241,30 @@ function askForCategory(recipientId) {
   });
 }
 
-function sendTextMessage(recipientId, message) {
-  console.log("sendTextMessage", recipientId, message)
-  request({
-      url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token: PAGE_ACCESS_TOKEN },
-      method: 'POST',
-      json: {
-          recipient: { id: recipientId },
-          message: { text: message }
+function sendTextMessage(recipientId, message, quickReplies) {
+  console.log("sendTextMessage", recipientId, message, quickReplies)
+
+  const messagePayload = {
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: {
+        recipient: { id: recipientId },
+        message: { text: message }
+    }
+  }
+
+  if (quickReplies) {
+    messagePayload.json.quick_replies = quickReplies.map(v => {
+      return {
+        "content_type": "text",
+        "title": v,
+        "payload": v
       }
-  }, function(error, response, body) {
+    })
+  }
+
+  request(messagePayload, function(error, response, body) {
       if (error) {
           console.log('Error sending message: ' + response.error);
       }
@@ -270,8 +292,8 @@ function sendConfirmTemplate(recipientId, postInfo) {
                     "image_url": postInfo.metadata.image
                   },
                   {
-                    "title": Object.keys(categories)[postInfo.category],
-                    "subtitle": postInfo.comment,
+                    "title": "Group Category: " + Object.keys(categories)[postInfo.category],
+                    "subtitle": "Why Is This useful? \"" + postInfo.comment + "\"",
                   }
                 ],
                 "buttons": [
