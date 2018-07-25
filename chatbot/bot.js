@@ -254,7 +254,7 @@ function sendTextMessage(recipientId, message, quickReplies) {
   }
 
   if (quickReplies) {
-    messagePayload.message.quick_replies = quickReplies.map(v => {
+    messagePayload.json.message.quick_replies = quickReplies.map(v => {
       return {
         "content_type": "text",
         "title": v,
