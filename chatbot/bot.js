@@ -123,6 +123,7 @@ function receivedText(event) {
 }
 
 function receivedConfirm(event) {
+  var senderId = event.sender && event.sender.id;
   postRepository.addPost(dialogContext[senderId])
 
   // 고맙다고 마무리 인사하기 
@@ -179,7 +180,7 @@ function receivedCategory(event) {
     `Thanks. This article world most useful to "${category}" groups.
     Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
     `, [
-      "Will make your day",
+      "It's Funny",
       "Viralable video",
       "Latest research",
       "Breaking news",
