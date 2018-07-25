@@ -247,6 +247,7 @@ function sendTextMessage(recipientId, message) {
 }
 
 function sendConfirmTemplate(recipientId, postInfo) {
+  console.log("sendConfirmTemplate", recipientId, postInfo)
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
       qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -266,8 +267,8 @@ function sendConfirmTemplate(recipientId, postInfo) {
                     "image_url": postInfo.metadata.image
                   },
                   {
-                    "title": Object.keys(categories)[postInfo.metadata.category],
-                    "subtitle": postInfo.metadata.comment,
+                    "title": Object.keys(categories)[postInfo.category],
+                    "subtitle": postInfo.comment,
                   }
                 ],
                 "buttons": [
