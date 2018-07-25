@@ -177,9 +177,10 @@ function receivedCategory(event) {
 
   // ask for sender comments 
   sendTextMessage(senderId, 
-    `Thanks. This article world most useful to "${category}" groups.
-    Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
-    `, [
+`Thanks. This article world most useful to "${category}" groups.
+
+Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
+`, [
       "It's Funny",
       "Fascinating Event",
       "Latest job posting",
