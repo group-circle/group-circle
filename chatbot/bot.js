@@ -179,13 +179,14 @@ function receivedCategory(event) {
     `Thanks. This article world most useful to "${category}" groups.
     Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
     `, [
-      "This pic will make your day",
-      "a viralable video",
-      "a breaking news",
+      "Will make your day",
+      "Viralable video",
+      "Latest research",
+      "Breaking news",
+      "Eengaging topic",
       "Latest job posting",
       "Urgent question",
-      "It is Useful tip for life",
-      "Article contains great topic to talk with"
+      "Useful tip"
     ])
 
 
