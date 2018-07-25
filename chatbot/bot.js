@@ -266,7 +266,7 @@ function sendConfirmTemplate(recipientId, postInfo) {
                     "image_url": postInfo.metadata.image
                   },
                   {
-                    "title": Object.keys(postInfo.metadata.category),
+                    "title": Object.keys(categories)[postInfo.metadata.category],
                     "subtitle": postInfo.metadata.comment,
                   }
                 ],
