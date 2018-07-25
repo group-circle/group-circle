@@ -242,7 +242,6 @@ function askForCategory(recipientId) {
 }
 
 function sendTextMessage(recipientId, message, quickReplies) {
-  console.log("sendTextMessage", recipientId, message, quickReplies)
 
   const messagePayload = {
     url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -255,7 +254,7 @@ function sendTextMessage(recipientId, message, quickReplies) {
   }
 
   if (quickReplies) {
-    messagePayload.json.quick_replies = quickReplies.map(v => {
+    messagePayload.quick_replies = quickReplies.map(v => {
       return {
         "content_type": "text",
         "title": v,
@@ -263,6 +262,8 @@ function sendTextMessage(recipientId, message, quickReplies) {
       }
     })
   }
+  console.log("sendTextMessage", recipientId, message)
+  console.log("messagePayload", messagePayload)
 
   request(messagePayload, function(error, response, body) {
       if (error) {
