@@ -1,5 +1,5 @@
 const db = require("./Firebase");
-const LIMIT = 20;
+const LIMIT = require("./const").LIMIT;
 const categories = require("./Category")
 
 function getRandomInt(min, max) {
@@ -32,7 +32,7 @@ module.exports = {
     },
 
     findPostListByLastKeyAndCategory : function (lastKey, category) {
-
+        console.log("findPostListByLastKeyAndCategory", category, categories["all"], lastKey)
         if(category === categories["all"]) {
             return this.ref.orderByKey().startAt(lastKey).limitToFirst(LIMIT).once("value")
         }
@@ -41,6 +41,7 @@ module.exports = {
     },
 
     findAllPostList : function(category) {
+        console.log("findAllPostList", category)
 
         if(category === categories["all"]) {
             return this.ref.orderByKey().limitToFirst(LIMIT).once("value")
