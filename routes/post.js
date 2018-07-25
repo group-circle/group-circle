@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+const LIMIT = require("../src/const").LIMIT;
 
 let postRepository= require("../src/PostRepository");
 
@@ -49,7 +50,8 @@ const toResponse = (r) => {
 }
 
 const makeLastKey = (result) => {
-    if(Object.keys(result).length < 20) {
+    console.log("makeLastKey", Object.keys(result).length, LIMIT)
+    if(Object.keys(result).length < LIMIT) {
         return null;
     }
 

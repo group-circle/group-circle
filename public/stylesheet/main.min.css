@@ -59,10 +59,13 @@ li {
     margin: 0;
     letter-spacing: 1px; }
 
+body {
+  overflow-anchor: none; }
+
 .header {
   width: 100%;
-  height: 82px;
-  background-color: #3b5998; }
+  height: 70px;
+  background-color: #24d588; }
   .header h1 {
     padding: 13px;
     float: left;
@@ -70,6 +73,16 @@ li {
   .header .loginBtnContainer {
     margin: 21px;
     float: right; }
+  .header .categories {
+    -webkit-padding-start: 0; }
+    .header .categories .category {
+      display: inline-block;
+      color: white;
+      font-size: 20px;
+      line-height: 70px;
+      padding: 0 20px; }
+    .header .categories .category.selected {
+      background-color: rgba(0, 0, 0, 0.1); }
 
 .welcome {
   font-size: 70px;

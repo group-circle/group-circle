@@ -1,1 +1,1 @@
-web: node ./chatbot/bot.js
+web: concurrently "node ./bin/www" "node ./chatbot/bot.js"

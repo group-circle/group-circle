@@ -72,24 +72,34 @@ app.post('/webhook', (req, res) => {
         console.log("webhook_event", webhook_event)
         const senderId = webhook_event.sender && webhook_event.sender.id;
         const alreadyHaveURL = dialogContext[senderId] && dialogContext[senderId].url
+        const alreadyHaveCategory = dialogContext[senderId] && dialogContext[senderId].category
         const isReceivedTextMessage = !!webhook_event.message
         const isReceivedURL =
           webhook_event.message && webhook_event.message.nlp && webhook_event.message.nlp.entities &&
           webhook_event.message.nlp.entities.url && webhook_event.message.nlp.entities.url.length > 0
-        
           console.log("isReceivedURL", isReceivedURL)
           console.log("isReceivedTextMessage", isReceivedTextMessage)
           console.log("alreadyHaveURL", alreadyHaveURL)
           console.log("dialogContext", dialogContext)
-          
-        if (isReceivedURL) {
+        const isPostBack = webhook_event.postback && webhook_event.postback.payload
+
+        if (isPostBack && isPostBack === "confirm submit") {
+          receivedConfirm(webhook_event)
+        } else if (isReceivedURL) {
           console.log("receivedURL")
           receivedURL(webhook_event)
         } else if (isReceivedTextMessage) {
           if (alreadyHaveURL) {
-            // 아마 카테고리 정보를 가지고 있을 것이다
-            console.log("receivedCategory")
-            receivedCategory(webhook_event)
+            if (alreadyHaveCategory) {
+              // 아마 센더 메시지 가 적혀있을 것이다.
+              console.log("receivedComment")
+              receivedComment(webhook_event)
+              
+            } else {
+              // 아마 카테고리 정보를 가지고 있을 것이다
+              console.log("receivedCategory")
+              receivedCategory(webhook_event)
+            }
           } else {
             const userProfile = await getUserProfile(senderId)
 
@@ -112,21 +122,84 @@ function receivedText(event) {
   sendTextMessage(senderId, "Please provide the URL you would like to share.");
 }
 
+function receivedConfirm(event) {
+  var senderId = event.sender && event.sender.id;
+  postRepository.addPost(dialogContext[senderId])
+
+  // 고맙다고 마무리 인사하기 
+  sendTextMessage(senderId, 
+    `Thank you for submission. I will let related group moderators check the article.`);
+
+  // 세션 정보 지우기
+  delete dialogContext[senderId]
+}
+
+function receivedComment(event) {
+  var senderId = event.sender.id;
+  var comment = event.message.text;
+
+  dialogContext[senderId].comment = comment
+
+  // 모든 정보 합친 템플릿 레스폰스 보내고 컨펌 받기 
+  const postInfo = dialogContext[senderId]
+  
+  sendConfirmTemplate(senderId, postInfo)
+
+  // // 파베에 링크와 카테고리 정보 쏘기 
+  // dialogContext[senderId].category = categories[category]
+  // // TODO: 기록 완료 후에 응답 주면 더 안정적이고 좋을듯
+  // postRepository.addPost(dialogContext[senderId])
+
+  // // ask for sender comments 
+  // sendTextMessage(senderId, 
+  //   `Thanks. This article world most useful to "${category}" groups.
+  //   Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
+  //   `);
+
+
+  // // 고맙다고 마무리 인사하기 
+  // sendTextMessage(senderId, 
+  //   `Ok. This article is related to "${category}". Thank you for submission. I will let related group moderators check the article.`);
+
+  // // 세션 정보 지우기
+  // delete dialogContext[senderId]
+}
+
 function receivedCategory(event) {
   var senderId = event.sender.id;
   var category = event.message.text;
 
   // 파베에 링크와 카테고리 정보 쏘기 
   dialogContext[senderId].category = categories[category]
-  // TODO: 기록 완료 후에 응답 주면 더 안정적이고 좋을듯
-  postRepository.addPost(dialogContext[senderId])
 
-  // 고맙다고 마무리 인사하기 
+  // // TODO: 기록 완료 후에 응답 주면 더 안정적이고 좋을듯
+  // postRepository.addPost(dialogContext[senderId])
+
+  // ask for sender comments 
   sendTextMessage(senderId, 
-    `Ok. This article is related to "${category}". Thank you for submission. I will let related group moderators check the article.`);
+`Thanks. This article world most useful to "${category}" groups.
 
-  // 세션 정보 지우기
-  delete dialogContext[senderId]
+Finally, leave a message for the group operator. It should be like why this post is helpful to the community or why you are sharing it.
+`, [
+      "It's Funny",
+      "Fascinating Event",
+      "Latest job posting",
+      "Urgent question",
+      "Latest research",
+      "Viralable video",
+      "Breaking news",
+      "Eengaging topic",
+      "Useful tip"
+    ])
+
+
+
+  // // 고맙다고 마무리 인사하기 
+  // sendTextMessage(senderId, 
+  //   `Ok. This article is related to "${category}". Thank you for submission. I will let related group moderators check the article.`);
+
+  // // 세션 정보 지우기
+  // delete dialogContext[senderId]
 }
 
 async function receivedURL(event) {
@@ -143,7 +216,7 @@ async function receivedURL(event) {
 function askForCategory(recipientId) {
   console.log("askForCategory", dialogContext[recipientId].url)
   // quickReplies 의 최대 표시가능 갯수는 11개이므로 
-  const categoryKeys = Object.keys(categories).slice(0, 5)
+  const categoryKeys = Object.keys(categories).slice(1, 12)
   console.log("categoryKeys", categoryKeys)
   let quickReplies = categoryKeys.map(category => {
     return {
@@ -161,7 +234,7 @@ function askForCategory(recipientId) {
       json: {
           recipient: { id: recipientId },
           message: {
-            "text": "Please tell us what category of content you just give.",
+            "text": "What category of a facebook group do you think this link is most beneficial to?",
             "quick_replies": quickReplies
           }
       }
@@ -172,24 +245,39 @@ function askForCategory(recipientId) {
   });
 }
 
+function sendTextMessage(recipientId, message, quickReplies) {
 
-function sendTextMessage(recipientId, message) {
-  console.log("sendTextMessage", recipientId, message)
-  request({
-      url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token: PAGE_ACCESS_TOKEN },
-      method: 'POST',
-      json: {
-          recipient: { id: recipientId },
-          message: { text: message }
+  const messagePayload = {
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: {
+        recipient: { id: recipientId },
+        message: { text: message }
+    }
+  }
+
+  if (quickReplies) {
+    messagePayload.json.message.quick_replies = quickReplies.map(v => {
+      return {
+        "content_type": "text",
+        "title": v,
+        "payload": v
       }
-  }, function(error, response, body) {
+    })
+  }
+  console.log("sendTextMessage", recipientId, message)
+  console.log("messagePayload", messagePayload)
+
+  request(messagePayload, function(error, response, body) {
       if (error) {
           console.log('Error sending message: ' + response.error);
       }
   });
 }
-function sendURLButton(recipientId, url) {
+
+function sendConfirmTemplate(recipientId, postInfo) {
+  console.log("sendConfirmTemplate", recipientId, postInfo)
   request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
       qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -200,14 +288,24 @@ function sendURLButton(recipientId, url) {
             "attachment":{
               "type":"template",
               "payload":{
-                "template_type":"button",
-                "text":"Try the URL button!",
-                "buttons":[
+                "template_type":"list",
+                "top_element_style": "large",
+                "elements":[
                   {
-                    "type":"web_url",
-                    "url": url,
-                    "title":"URL Button",
-                    "webview_height_ratio": "full"
+                    "title": postInfo.metadata.title,
+                    "subtitle": postInfo.metadata.description,
+                    "image_url": postInfo.metadata.image
+                  },
+                  {
+                    "title": "Group Category: " + Object.keys(categories)[postInfo.category],
+                    "subtitle": "Why Is This useful? \"" + postInfo.comment + "\"",
+                  }
+                ],
+                "buttons": [
+                  {
+                    "title": "Submit",
+                    "type": "postback",
+                    "payload": "confirm submit"      
                   }
                 ]
               }

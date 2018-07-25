@@ -2,10 +2,15 @@
 @import 'mixins';
 @import 'ui';
 
+body {
+  overflow-anchor: none;
+}
+
 .header {
+
   width: 100%;
-  height: 82px;
-  background-color: #3b5998;
+  height: 70px;
+  background-color: #24d588;
   h1 {
     padding: 13px;
     float: left;
@@ -14,6 +19,19 @@
   .loginBtnContainer {
     margin: 21px;
     float: right;
+  }
+  .categories {
+    -webkit-padding-start: 0;
+    .category {
+      display: inline-block;
+      color: white;
+      font-size: 20px;
+      line-height: 70px;
+      padding: 0 20px;
+    }
+    .category.selected {
+      background-color: rgba(0,0,0,.1);
+    }
   }
 }
 .welcome {
@@ -25,6 +43,7 @@
     height: 100px;
   }
 }
+
 
 .listWrapper {
   .list {
