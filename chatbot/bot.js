@@ -81,8 +81,11 @@ app.post('/webhook', (req, res) => {
           console.log("isReceivedTextMessage", isReceivedTextMessage)
           console.log("alreadyHaveURL", alreadyHaveURL)
           console.log("dialogContext", dialogContext)
-          
-        if (isReceivedURL) {
+        const isPostBack = webhook_event.postback && webhook_event.postback.payload
+
+        if (isPostBack && isPostBack === "confirm submit") {
+          receivedConfirm(webhook_event)
+        } else if (isReceivedURL) {
           console.log("receivedURL")
           receivedURL(webhook_event)
         } else if (isReceivedTextMessage) {
